@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="Debug" />
+	<File name="Functions.cpp" open="0" top="0" tabpos="4">
+		<Cursor position="146" topLine="0" />
+	</File>
+	<File name="InsertSort.cpp" open="0" top="0" tabpos="4">
+		<Cursor position="212" topLine="0" />
+	</File>
+	<File name="MergeSort.cpp" open="0" top="0" tabpos="5">
+		<Cursor position="172" topLine="0" />
+	</File>
+	<File name="MergeSortLoop.cpp" open="0" top="0" tabpos="6">
+		<Cursor position="89" topLine="0" />
+	</File>
+	<File name="QuickSortRand.cpp" open="0" top="0" tabpos="4">
+		<Cursor position="90" topLine="0" />
+	</File>
+	<File name="QuickSortStandart.cpp" open="0" top="0" tabpos="5">
+		<Cursor position="17" topLine="0" />
+	</File>
+	<File name="QuickSortUni.cpp" open="0" top="0" tabpos="5">
+		<Cursor position="259" topLine="0" />
+	</File>
+	<File name="Test.cpp" open="0" top="0" tabpos="5">
+		<Cursor position="91" topLine="0" />
+	</File>
+	<File name="main.cpp" open="1" top="1" tabpos="0">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="sort.h" open="0" top="0" tabpos="3">
+		<Cursor position="344" topLine="0" />
+	</File>
+</CodeBlocks_layout_file>

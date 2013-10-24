@@ -1,0 +1,84 @@
+# depslib dependency file v1.0
+1354111717 source:/home/allen/Документы/projects/sorts/SortsInt/InsertSort.cpp
+	"sort.h"
+
+1354112493 /home/allen/Документы/projects/sorts/SortsInt/sort.h
+	<iostream>
+	<stdlib.h>
+	<time.h>
+	<stdint.h>
+	<cstring>
+
+1353962601 source:/home/allen/Документы/projects/sorts/SortsInt/MergeSort.cpp
+	"sort.h"
+
+1354109744 source:/home/allen/Документы/projects/sorts/SortsInt/QuickSortStandart.cpp
+	"sort.h"
+
+1354112636 source:/home/allen/Документы/projects/sorts/SortsInt/main.cpp
+	"sort.h"
+
+1353851582 source:/home/allen/Документы/projects/sorts/SortsInt/QuickSortRand.cpp
+	"sort.h"
+
+1353962353 source:/home/allen/Документы/projects/sorts/SortsInt/HeapSort.cpp
+	"sort.h"
+
+1353962393 source:/home/allen/Документы/projects/sorts/SortsInt/HeapSortLoop.cpp
+	"sort.h"
+
+1354112570 source:/home/allen/Документы/projects/sorts/SortsInt/Functions.cpp
+	"sort.h"
+
+1354384191 source:/home/allen/Документы/projects/SortsInt/Functions.cpp
+	"sort.h"
+
+1354555046 /home/allen/Документы/projects/SortsInt/sort.h
+	<iostream>
+	<stdlib.h>
+	<time.h>
+	<stdint.h>
+	<cstring>
+	<math.h>
+	<fstream>
+	<algorithm>
+
+1354307524 source:/home/allen/Документы/projects/SortsInt/HeapSort.cpp
+	"sort.h"
+
+1354307524 source:/home/allen/Документы/projects/SortsInt/HeapSortLoop.cpp
+	"sort.h"
+
+1354379289 source:/home/allen/Документы/projects/SortsInt/InsertSort.cpp
+	"sort.h"
+
+1354186219 source:/home/allen/Документы/projects/SortsInt/MergeSort.cpp
+	"sort.h"
+
+1354189352 source:/home/allen/Документы/projects/SortsInt/QuickSortRand.cpp
+	"sort.h"
+
+1354109744 source:/home/allen/Документы/projects/SortsInt/QuickSortStandart.cpp
+	"sort.h"
+
+1356321385 source:/home/allen/Документы/projects/SortsInt/main.cpp
+	"sort.h"
+
+1354293248 source:/home/allen/Документы/projects/SortsInt/MergeSortLoop.cpp
+	"sort.h"
+
+1354189248 source:/home/allen/Документы/projects/SortsInt/QuickSortWithInsert.cpp
+	"sort.h"
+
+1354201230 source:/home/allen/Документы/projects/SortsInt/QuickSortUni.cpp
+	"sort.h"
+
+1356321479 source:/home/allen/Документы/projects/SortsInt/UniSort.cpp
+	"sort.h"
+
+1356321220 source:/home/allen/Документы/projects/SortsInt/Test.cpp
+	"sort.h"
+
+1354555087 source:/home/allen/Документы/projects/SortsInt/ShellSort.cpp
+	"sort.h"
+

@@ -1,0 +1,17 @@
+node 1
+node 6
+node 5
+node 4
+node 2
+node 3
+node 7
+biedge 2 3 6
+biedge 3 4 15
+biedge 0 1 14
+biedge 1 2 9
+biedge 4 5 10
+biedge 0 5 9
+biedge 1 5 2
+biedge 3 5 11
+biedge 0 4 7
+q
