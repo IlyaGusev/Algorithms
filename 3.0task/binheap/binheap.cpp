@@ -1,8 +1,8 @@
 #include <iostream>
 #include <list>
 using namespace std;
-
-template <class Key, class Data, Key max>
+const int MAX_INT = 40000000;
+template <class Key, class Data>
 class BinHeap{
     struct Node{
         Node(Key _key, Data _data) :
@@ -23,78 +23,48 @@ class BinHeap{
     public:
         BinHeap() : root(nullptr) {}
         void insert(Key, Data);
-        void print(Node* a){
-            Node* current;
-            if(a==nullptr)
-                current = root;
-            else
-                current = a;
-            while(current!=nullptr){
-                cout<<current->key<<" ";
-                current=current->sibling;
-            }
-            cout<<endl;
-        }
+        void insert(Node*);
+        void erase(Node*);
         Node* minimum();
         Node* extract_minimum();
+        void decrease_key(Node*, Key);
+        void print(Node*);
     private:
         Node* root;
         Node* merge(Node*, Node*);
         Node* merge_roots(Node*, Node*);
         void link(Node*, Node*);
-        void insert(Node*);
-
-        //decrease_key(Node*, T);
-        //erase(Node*);
 
 };
 
-template <class Key, class Data, Key max>
-    typename BinHeap<Key, Data, max>::Node* BinHeap<Key, Data, max>::merge (Node* first, Node* second){
+template <class Key, class Data>
+    typename BinHeap<Key, Data>::Node* BinHeap<Key, Data>::merge (Node* first, Node* second){
         Node* x = merge_roots(first, second);
         Node* root = x;
         if (x==nullptr) return root;
         Node* prev_x = nullptr;
         Node* next_x = x->sibling;
         while(next_x != nullptr){
-            if (next_x->sibling!=nullptr){
-                if (x->degree == next_x->sibling->degree || (x->degree!=next_x->degree)){
-                    prev_x = x;
-                    x = next_x;
-                }
-                else{
-                    if (x->key<=next_x->key){
-                        x->sibling = next_x->sibling;
-                        link(next_x, x);
-                    }
-                    else{
-                        if (prev_x==nullptr)
-                            root = next_x;
-                        else
-                            prev_x->sibling = next_x;
-                        link(x, next_x);
-                        x=next_x;
-                    }
-                }
+            int next_x_sibling_degree = -1;
+            if (next_x->sibling!=nullptr)
+                next_x_sibling_degree = next_x->sibling->degree;
+
+            if (x->degree == next_x_sibling_degree || (x->degree!=next_x->degree)){
+                prev_x = x;
+                x = next_x;
             }
             else{
-                if (x->degree!=next_x->degree){
-                    prev_x = x;
-                    x = next_x;
+                if (x->key<=next_x->key){
+                    x->sibling = next_x->sibling;
+                    link(next_x, x);
                 }
                 else{
-                    if (x->key<=next_x->key){
-                        x->sibling = next_x->sibling;
-                        link(next_x, x);
-                    }
-                    else{
-                        if (prev_x==nullptr)
-                            root = next_x;
-                        else
-                            prev_x->sibling = next_x;
-                        link(x, next_x);
-                        x=next_x;
-                    }
+                    if (prev_x==nullptr)
+                        root = next_x;
+                    else
+                        prev_x->sibling = next_x;
+                    link(x, next_x);
+                    x=next_x;
                 }
             }
 
@@ -103,86 +73,67 @@ template <class Key, class Data, Key max>
         return root;
     }
 
-template <class Key, class Data, Key max>
-    void BinHeap<Key, Data, max>::link (Node* first, Node* second){
+template <class Key, class Data>
+    void BinHeap<Key, Data>::link (Node* first, Node* second){
         first->parent = second;
         first->sibling = second->child;
         second->child = first;
-        second->degree++;
+        second->degree = second->degree+1;
     }
 
-template <class Key, class Data, Key max>
-    typename BinHeap<Key, Data, max>::Node* BinHeap<Key, Data, max>::merge_roots (Node* first, Node* second){
-        Node* x;
-        Node* current;
-        if (first==nullptr){
-            current = second;
-            if (second!=nullptr)
-                second = second->sibling;
-        }
-        else
-        if (second==nullptr){
-            current = first;
-            if (first!=nullptr)
-                first = first->sibling;
-        }
-        else
-            if (first->degree<second->degree){
-                current = first;
-                first = first->sibling;
-
-            }else{
-                current = second;
-                second = second->sibling;
-            }
-        x = current;
-
+template <class Key, class Data>
+    typename BinHeap<Key, Data>::Node* BinHeap<Key, Data>::merge_roots (Node* first, Node* second){
+        Node* x = nullptr;
+        Node* current = nullptr;
+        int first_degree = MAX_INT;
+        int second_degree = MAX_INT;
+        if (first == nullptr && second ==nullptr)
+            return nullptr;
 
         while(first!=nullptr || second!=nullptr){
-            if (first==nullptr){
-                current->sibling=second;
+            first_degree = MAX_INT;
+            second_degree = MAX_INT;
+            if (first!=nullptr)
+                first_degree = first->degree;
+            if (second!=nullptr)
+                second_degree = second->degree;
+
+            if (first_degree<second_degree){
+                if (current!=nullptr) current->sibling=first; else x=first;
+                current = first;
+                first = first->sibling;
+            }else{
+                if (current!=nullptr) current->sibling=second; else x=second;
                 current = second;
                 second = second->sibling;
             }
-            else
-            if (second==nullptr){
-                current->sibling=first;
-                current = first;
-                first = first->sibling;
-            }
-            else
-                if (first->degree<second->degree){
-                    current->sibling=first;
-                    current = first;
-                    first = first->sibling;
-                }else{
-                    current->sibling=second;
-                    current = second;
-                    second = second->sibling;
-                }
         }
         return x;
     }
 
-template <class Key, class Data, Key max>
-    void BinHeap<Key, Data, max>::insert (Node* node){
+template <class Key, class Data>
+    void BinHeap<Key, Data>::insert (Node* node){
         root = merge(root, node);
     }
 
-template <class Key, class Data, Key max>
-    void BinHeap<Key, Data, max>::insert (Key key, Data data){
+template <class Key, class Data>
+    void BinHeap<Key, Data>::insert (Key key, Data data){
         Node* node = new Node(key, data);
         insert(node);
     }
 
-template <class Key, class Data, Key max>
-    typename BinHeap<Key, Data, max>::Node* BinHeap<Key, Data, max>::minimum(){
+template <class Key, class Data>
+    typename BinHeap<Key, Data>::Node* BinHeap<Key, Data>::minimum(){
         Node* answer = nullptr;
         Node* current = root;
-        Key min = max;
+        if (current == nullptr)
+            return answer;
+        Key minimal = current->key;
+        answer = current;
+        current = current->sibling;
         while(current!=nullptr){
-            if (current->key<min){
-                min = current->key;
+            if (current->key<minimal){
+                minimal = current->key;
                 answer = current;
             }
             current = current->sibling;
@@ -190,8 +141,9 @@ template <class Key, class Data, Key max>
         return answer;
     }
 
-template <class Key, class Data, Key max>
-    typename BinHeap<Key, Data, max>::Node* BinHeap<Key, Data, max>::extract_minimum(){
+template <class Key, class Data>
+    typename BinHeap<Key, Data>::Node* BinHeap<Key, Data>::extract_minimum(){
+
         Node* x = minimum();
 
         Node* temp = root;
@@ -206,9 +158,9 @@ template <class Key, class Data, Key max>
         }
 
         x->sibling=nullptr;
-    //    cout<<"roots: ";print(root);
+
+        ///Разворот списка детей x
         Node* p1 = x->child;
-    //    cout<<"p1: ";print(p1);
         Node* p2 = nullptr;
         Node* p3 = nullptr;
         while (p1!=nullptr){
@@ -223,30 +175,67 @@ template <class Key, class Data, Key max>
                 p1 = p2->sibling;
                 p2->sibling = temp;
             }
-            else{
-                break;
-            }
+            else break;
         }
-        Node* r;
-        if (p1==nullptr)
-            r=p2;
-        else
-            r=p1;
-    //        cout<<"extr: ";
-    //       print(r);
-        root = merge(root,r);
+        Node* reversed;
+        if (p1==nullptr) reversed=p2; else reversed=p1;
+        ///reversed - корень развёрнутого списка детей
+
+        root = merge(root, reversed);
         return x;
     }
 
+template <class Key, class Data>
+    void BinHeap<Key, Data>::decrease_key(Node* node, Key new_key){
+        if (new_key>=node->key)
+            return;
+        node->key = new_key;
+        Node* current = node;
+        Node* current_parent = node->parent;
+        while(current_parent!=nullptr){
+            if (current->key>current_parent->key)
+                break;
+            Key temp_key = current->key;
+            Data temp_data = current->data;
+            current->key=current_parent->key;
+            current->data=current_parent->data;
+            current_parent->key = temp_key;
+            current_parent->data = temp_data;
+
+            current = current_parent;
+            current_parent = current->parent;
+        }
+    }
+
+template <class Key, class Data>
+    void BinHeap<Key, Data>::erase(Node* node){
+        decrease_key(node, minimum()->key);
+        extract_minimum();
+    }
+template <class Key, class Data>
+    void BinHeap<Key, Data>::print(Node* a){
+        Node* current;
+        if(a==nullptr)
+            current = root;
+        else
+            current = a;
+        if (current == nullptr)
+            cout<<"Empty";
+        while(current!=nullptr){
+            cout<<current->key<<" ";
+            current=current->sibling;
+        }
+        cout<<endl;
+    }
 int main(){
-    BinHeap<int, int, 999> heap;
-    heap.insert(2, 2);
+    BinHeap<int, int> heap;
+    heap.insert(3, 2);
     heap.insert(1, 2);
     heap.insert(8, 2);
     heap.insert(5, 2);
     heap.insert(4, 2);
     heap.insert(6, 2);
-    heap.insert(3, 2);
+    heap.insert(33, 2);
     heap.insert(10, 2);
     heap.insert(20, 2);
     heap.insert(30, 2);
@@ -288,5 +277,7 @@ int main(){
     cout<<" "<<heap.extract_minimum()->key<<endl;
     heap.print(nullptr);
     cout<<" "<<heap.extract_minimum()->key<<endl;
+    heap.print(nullptr);
+    heap.erase(heap.minimum());
     heap.print(nullptr);
 }
