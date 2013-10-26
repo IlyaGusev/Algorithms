@@ -22,6 +22,7 @@ class BinHeap{
     };
     public:
         BinHeap() : root(nullptr) {}
+        ~BinHeap();
         void insert(Key, Data);
         void insert(Node*);
         void erase(Node*);
@@ -34,14 +35,17 @@ class BinHeap{
         Node* merge(Node*, Node*);
         Node* merge_roots(Node*, Node*);
         void link(Node*, Node*);
-
 };
-
+template <class Key, class Data>
+    BinHeap<Key, Data>::~BinHeap(){
+        while(root!=nullptr)
+            erase(root);
+    }
 template <class Key, class Data>
     typename BinHeap<Key, Data>::Node* BinHeap<Key, Data>::merge (Node* first, Node* second){
         Node* x = merge_roots(first, second);
-        Node* root = x;
-        if (x==nullptr) return root;
+        Node* answer = x;
+        if (x==nullptr) return answer;
         Node* prev_x = nullptr;
         Node* next_x = x->sibling;
         while(next_x != nullptr){
@@ -60,7 +64,7 @@ template <class Key, class Data>
                 }
                 else{
                     if (prev_x==nullptr)
-                        root = next_x;
+                        answer = next_x;
                     else
                         prev_x->sibling = next_x;
                     link(x, next_x);
@@ -70,7 +74,7 @@ template <class Key, class Data>
 
             next_x = x->sibling;
         }
-        return root;
+        return answer;
     }
 
 template <class Key, class Data>
@@ -87,7 +91,7 @@ template <class Key, class Data>
         Node* current = nullptr;
         int first_degree = MAX_INT;
         int second_degree = MAX_INT;
-        if (first == nullptr && second ==nullptr)
+        if (first == nullptr && second == nullptr)
             return nullptr;
 
         while(first!=nullptr || second!=nullptr){
@@ -113,6 +117,10 @@ template <class Key, class Data>
 
 template <class Key, class Data>
     void BinHeap<Key, Data>::insert (Node* node){
+        node->parent = nullptr;
+        node->child = nullptr;
+        node->sibling = nullptr;
+        node->degree = 0;
         root = merge(root, node);
     }
 
@@ -211,7 +219,9 @@ template <class Key, class Data>
     void BinHeap<Key, Data>::erase(Node* node){
         decrease_key(node, minimum()->key);
         extract_minimum();
+        delete node;
     }
+
 template <class Key, class Data>
     void BinHeap<Key, Data>::print(Node* a){
         Node* current;
@@ -227,6 +237,7 @@ template <class Key, class Data>
         }
         cout<<endl;
     }
+
 int main(){
     BinHeap<int, int> heap;
     heap.insert(3, 2);
@@ -245,7 +256,6 @@ int main(){
     heap.insert(9, 2);
     heap.insert(11, 2);
     heap.insert(12, 2);
-
 
     heap.print(nullptr);
     cout<<" "<<heap.extract_minimum()->key<<endl;
@@ -280,4 +290,5 @@ int main(){
     heap.print(nullptr);
     heap.erase(heap.minimum());
     heap.print(nullptr);
+
 }
