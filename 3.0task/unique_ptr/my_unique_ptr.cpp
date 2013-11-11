@@ -63,9 +63,15 @@ namespace my{
             imp = temp;
         }
 }
+class A{
+    public:
+    A(){};
+    ~A(){std::cout<<"DDDD"<<std::endl;}
+};
 int main(){
-    int* m = new int(5);
-    my::unique_ptr<int> p(m);
-    p.reset();
-    std::cout<<(*p);
+   // int* m = new int(5);
+   // my::unique_ptr<int> p(m);
+   // p.reset();
+   // std::cout<<(*p);
+   my::unique_ptr<A> p (new A());
 }
