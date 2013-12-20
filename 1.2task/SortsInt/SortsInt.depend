@@ -82,3 +82,52 @@
 1354555087 source:/home/allen/Документы/projects/SortsInt/ShellSort.cpp
 	"sort.h"
 
+1354384191 source:/home/allen/Документы/C++/homework/1.2task/SortsInt/Functions.cpp
+	"sort.h"
+
+1354555046 /home/allen/Документы/C++/homework/1.2task/SortsInt/sort.h
+	<iostream>
+	<stdlib.h>
+	<time.h>
+	<stdint.h>
+	<cstring>
+	<math.h>
+	<fstream>
+	<algorithm>
+
+1354307524 source:/home/allen/Документы/C++/homework/1.2task/SortsInt/HeapSort.cpp
+	"sort.h"
+
+1354307524 source:/home/allen/Документы/C++/homework/1.2task/SortsInt/HeapSortLoop.cpp
+	"sort.h"
+
+1354379289 source:/home/allen/Документы/C++/homework/1.2task/SortsInt/InsertSort.cpp
+	"sort.h"
+
+1356321385 source:/home/allen/Документы/C++/homework/1.2task/SortsInt/main.cpp
+	"sort.h"
+
+1354186219 source:/home/allen/Документы/C++/homework/1.2task/SortsInt/MergeSort.cpp
+	"sort.h"
+
+1354293248 source:/home/allen/Документы/C++/homework/1.2task/SortsInt/MergeSortLoop.cpp
+	"sort.h"
+
+1354189352 source:/home/allen/Документы/C++/homework/1.2task/SortsInt/QuickSortRand.cpp
+	"sort.h"
+
+1354109744 source:/home/allen/Документы/C++/homework/1.2task/SortsInt/QuickSortStandart.cpp
+	"sort.h"
+
+1354201230 source:/home/allen/Документы/C++/homework/1.2task/SortsInt/QuickSortUni.cpp
+	"sort.h"
+
+1354555087 source:/home/allen/Документы/C++/homework/1.2task/SortsInt/ShellSort.cpp
+	"sort.h"
+
+1356321220 source:/home/allen/Документы/C++/homework/1.2task/SortsInt/Test.cpp
+	"sort.h"
+
+1356321479 source:/home/allen/Документы/C++/homework/1.2task/SortsInt/UniSort.cpp
+	"sort.h"
+

@@ -19,9 +19,10 @@ template <class Key, class Data, class Compare>
     }
 
 template <class Key, class Data, class Compare>
-    void FibHeap<Key, Data, Compare>::insert (Key key, Data data = Data()) noexcept{
+    typename FibHeap<Key, Data, Compare>::Node* FibHeap<Key, Data, Compare>::insert (Key key, Data data = Data()) noexcept{
         Node* node = new Node(key, data);
         insert(*node);
+        return node;
     }
 
 template <class Key, class Data, class Compare>
@@ -38,8 +39,9 @@ template <class Key, class Data, class Compare>
         }
         else{
             insert_to_root_list(root, &node);
-            if (Compare()(node.key, root->key))
+            if (Compare()(node.key, root->key)){
                 root = &node;
+            }
         }
         number_of_nodes++;
     }
@@ -189,12 +191,12 @@ template <class Key, class Data, class Compare>
     void FibHeap<Key, Data, Compare>::decrease_key(Node* node, Key new_key) {
         if (node == nullptr)
             throw logic_error("There is no node to decrease key.");
-        if (new_key>=node->key)
+        if (Compare()(node->key, new_key))
             return;
         node->key = new_key;
         Node* parent = node->parent;
         if (parent==nullptr){
-            if (node->key < root->key)
+            if (Compare()(node->key, root->key))
                 root = node;
         }else{
             if (Compare()(node->key, parent->key)){

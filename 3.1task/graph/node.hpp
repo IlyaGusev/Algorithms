@@ -10,6 +10,8 @@ template <class I, class N, class E>
 template <class I, class N, class E>
     I Graph<I, N, E>::Node::getId() const {return id;}
 template <class I, class N, class E>
-    N Graph<I, N, E>::Node::getValue() const {return value;}
+    N Graph<I, N, E>::Node::getValueConst() const {return value;}
+template <class I, class N, class E>
+    N& Graph<I, N, E>::Node::getValue(){return value;}
 
 #endif // NODE_HPP_INCLUDED

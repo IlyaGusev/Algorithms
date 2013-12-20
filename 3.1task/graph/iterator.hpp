@@ -4,13 +4,15 @@
 template <class I, class N, class E>
 template <class Container>
     Graph<I, N, E>::iterator_search<Container>::iterator_search(const Graph* _G) : colors(), G(_G),
-                                                                                   touched(), current(G->nodes.begin()),
-                                                                                   beginning(current->first){
+                                                                                   touched(), current(G->nodes.begin()){
         auto it = G->nodes.begin();
-        colors.insert(make_pair(it->first, 2));
-        ++it;
-        for (; it!= G->nodes.end(); it++)
-            colors.insert(make_pair(it->first, 0));
+        if (current!=G->nodes.end()){
+            beginning = current->first;
+            colors.insert(make_pair(it->first, 2));
+            ++it;
+            for (; it!= G->nodes.end(); it++)
+                colors.insert(make_pair(it->first, 0));
+        }
     }
 
 template <class I, class N, class E>
@@ -110,7 +112,7 @@ template <class Container>
 
 template <class I, class N, class E>
 template <class Container>
-    bool Graph<I, N, E>::iterator_search<Container>::operator ==(iterator_search _it) const{
+    bool Graph<I, N, E>::iterator_search<Container>::operator ==(iterator_search const&_it) const{
         if ((G == _it.G && beginning == _it.beginning && current == _it.current) ||
             (current==G->nodes.end() && _it.current==G->nodes.end()))
             return true;
@@ -120,7 +122,7 @@ template <class Container>
 
 template <class I, class N, class E>
 template <class Container>
-    bool Graph<I, N, E>::iterator_search<Container>::operator !=(iterator_search _it) const{
+    bool Graph<I, N, E>::iterator_search<Container>::operator !=(iterator_search const&_it) const{
         return !((*this)==_it);
     }
 
@@ -180,6 +182,86 @@ template <class I, class N, class E>
 ///----------------------------------------------------------------------------------------///
 
 template <class I, class N, class E>
+    Graph<I, N, E>::pseudo_iterator_dfs::pseudo_iterator_dfs(const Graph* _G) : iterator_search<stack<I>>(_G){
+        if (this->current!=this->G->nodes.end()){
+            this->touched.push(this->current->second->getId());
+            this->colors[this->current->second->getId()] = 1;
+        }
+    }
+template <class I, class N, class E>
+    Graph<I, N, E>::pseudo_iterator_dfs::pseudo_iterator_dfs(const Graph* _G, I const & _id) : iterator_search<stack<I>>(_G, _id){
+        if (this->current!=this->G->nodes.end()){
+            this->touched.push(this->current->second->getId());
+            this->colors[this->current->second->getId()] = 1;
+        }
+    }
+template <class I, class N, class E>
+    Graph<I, N, E>::pseudo_iterator_dfs::pseudo_iterator_dfs(const Graph* _G, iterator_node _it) : iterator_search<stack<I>>(_G, _it){
+        if (this->current!=this->G->nodes.end()){
+            this->touched.push(this->current->second->getId());
+            this->colors[this->current->second->getId()] = 1;
+        }
+    }
+template <class I, class N, class E>
+    Graph<I, N, E>::pseudo_iterator_dfs::pseudo_iterator_dfs(pseudo_iterator_dfs const & _it) : iterator_search<stack<I>>(_it){}
+template <class I, class N, class E>
+    Graph<I, N, E>::pseudo_iterator_dfs::pseudo_iterator_dfs(pseudo_iterator_dfs && _it) : iterator_search<stack<I>>(_it){}
+
+template <class I, class N, class E>
+    void Graph<I, N, E>::pseudo_iterator_dfs::operator=(pseudo_iterator_dfs const & _it) {return iterator_search<stack<I>>::operator=(_it);}
+template <class I, class N, class E>
+    void Graph<I, N, E>::pseudo_iterator_dfs::operator=(pseudo_iterator_dfs && _it) {return iterator_search<stack<I>>::operator=(_it);}
+
+template <class I, class N, class E>
+    typename Graph<I, N, E>::pseudo_iterator_dfs& Graph<I, N, E>::pseudo_iterator_dfs::operator++(){
+        if (this->current!=this->G->nodes.end()){
+            if (!this->touched.empty()){
+                auto children = (this->G->getOutNodes(this->touched.top()));
+                auto it = children.begin();
+                auto end = children.end();
+                for (; it!=end; it++)
+                    if (this->colors[(*it)->getId()] == 0){
+                        this->touched.push((*it)->getId());
+                        this->colors[(*it)->getId()] = 1;
+                        this->current = this->G->nodes.find((*it)->getId());
+                        return (*this);
+                    }
+                this->current = this->G->nodes.find(this->touched.top());
+                this->colors[this->touched.top()] = 2;
+                this->touched.pop();
+                return *this;
+            }
+            else{
+                for (auto it = this->colors.begin(); it!= this->colors.end(); it++)
+                    if (it->second == 0){
+                        this->touched.push(it->first);
+                        it->second = 1;
+                        this->current = this->G->nodes.find(it->first);
+                        return (*this);
+                    }
+                this->current = this->G->nodes.end();
+                return (*this);
+            }
+        }
+        return (*this);
+    }
+
+template <class I, class N, class E>
+    typename Graph<I, N, E>::pseudo_iterator_dfs Graph<I, N, E>::pseudo_iterator_dfs::operator++(int){
+        auto temp((*this));
+        ++(*this);
+        return temp;
+    }
+
+template <class I, class N, class E>
+    int Graph<I, N, E>::pseudo_iterator_dfs::getColor() const{
+        I i = (this->current->first);
+        auto it = this->colors.find(i);
+        return (it->second);
+    }
+
+///----------------------------------------------------------------------------------------///
+template <class I, class N, class E>
     Graph<I, N, E>::iterator_bfs::iterator_bfs(const Graph* _G) : iterator_search<queue<I>>(_G){}
 template <class I, class N, class E>
     Graph<I, N, E>::iterator_bfs::iterator_bfs(const Graph* _G, I const & _id) : iterator_search<queue<I>>(_G, _id){}
@@ -229,5 +311,6 @@ template <class I, class N, class E>
         ++(*this);
         return temp;
     }
+
 
 #endif // ITERATOR_HPP_INCLUDED

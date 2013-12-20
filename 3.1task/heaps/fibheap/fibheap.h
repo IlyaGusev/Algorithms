@@ -13,39 +13,40 @@ using std::less;
 
 template <class Key, class Data = int, class Compare = less<Key>>
 class FibHeap{
-    class Node{
-        friend class FibHeap;
-        public:
-            Key first() const { return key; }
-            Key second() const { return data; }
-        private:
-            Key key;
-            Data data;
-            Node(Key _key, Data _data) :
-                key(_key), data(_data), parent(nullptr),
-                left(this), right(this), child(nullptr),
-                mark(false), degree(0){}
-            Node() :
-                key(), data(), parent(nullptr),
-                left(this), right(this), child(nullptr),
-                mark(false), degree(0){}
-            Node* parent;
-            Node* left;
-            Node* right;
-            Node* child;
-            bool mark;
-            int degree;
-    };
     public:
+        class Node{
+            friend class FibHeap;
+            public:
+                Key first() const { return key; }
+                Key second() const { return data; }
+            private:
+                Key key;
+                Data data;
+                Node(Key _key, Data _data) :
+                    key(_key), data(_data), parent(nullptr),
+                    left(this), right(this), child(nullptr),
+                    mark(false), degree(0){}
+                Node() :
+                    key(), data(), parent(nullptr),
+                    left(this), right(this), child(nullptr),
+                    mark(false), degree(0){}
+                Node* parent;
+                Node* left;
+                Node* right;
+                Node* child;
+                bool mark;
+                int degree;
+        };
         FibHeap() : root(nullptr), number_of_nodes(0) {}
         ~FibHeap();
-        void insert(Key, Data)                  noexcept;
+        Node* insert(Key, Data)                 noexcept;
         void insert(Node&)                      noexcept;
         void merge(FibHeap*)                    noexcept;
         void erase(Node*);
         Node* extract_minimum();
         Node* minimum()                         const noexcept {return root;}
         void decrease_key(Node*, Key);
+        bool empty()                            const noexcept {return (root==nullptr);}
         void print(Node*, Node*, int)           const noexcept;
     private:
         void insert_to_root_list(Node*, Node*)  noexcept;

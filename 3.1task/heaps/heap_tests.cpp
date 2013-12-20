@@ -1,14 +1,15 @@
 #include <iostream>
 #include <gtest/gtest.h>
 #include <pthread.h>
+#include "../speedtest/speedtest.h"
 #include "binheap/binheap.h"
 #include "fibheap/fibheap.h"
 #define Heap BinHeap
 namespace {
-    class HeapIntTest : public ::testing::Test {
+    class HeapIntTest : public my::SpeedTest {
     protected:
         Heap<int> heap;
-        HeapIntTest() {}
+        HeapIntTest() : SpeedTest() {}
         virtual ~HeapIntTest() {}
         virtual void SetUp() {
             heap.insert(3);
@@ -74,10 +75,9 @@ namespace {
         ASSERT_THROW(heap.erase(heap.minimum()), logic_error);
     }
     TEST_F(HeapIntTest, Test) {
-        for(int i=0; i<31; i++)
-            heap.insert(i);
-        heap.extract_minimum();
-        heap.print();
+        for(int i=1; i<200000; i++)
+            heap.insert(2*i);
+        //heap.print();
     }
 }
 
