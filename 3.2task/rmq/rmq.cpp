@@ -11,6 +11,10 @@ vector<int> speed_data;
 RMQ<int, less<int>, SegmentTree<int>>  speed_STR;
 RMQ<int, less<int>, SqrtDecomposition<int>> speed_SQR;
 RMQ<int, less<int>, FKB<int>> speed_FKB;
+const int cases_n = 100000000;
+const int speed_s = 10000000;
+int cases1[cases_n];
+int cases2[cases_n];
 namespace {
     class RMQTest : public my::SpeedTest {
     protected:
@@ -18,9 +22,16 @@ namespace {
         virtual ~RMQTest() {}
         static void SetUpTestCase() {
             srand(time(0));
-            speed_data = vector<int>(10000);
-            for (int i=0; i<10000; i++)
-                speed_data[i] = rand()%10000+1;
+            speed_data = vector<int>(speed_s);
+            for (int i=0; i<(int)speed_data.size(); i++)
+                speed_data[i] = rand()%1000000+1;
+            int j, i;
+            for (int k=0; k<cases_n; k++){
+                j = rand()%(speed_s-1)+1;
+                i = rand()%j+1;
+                cases1[k] = i;
+                cases2[k] = j;
+            }
             speed_STR = RMQ<int, less<int>, SegmentTree<int>>(speed_data);
             speed_SQR = RMQ<int, less<int>, SqrtDecomposition<int>>(speed_data);
             speed_FKB = RMQ<int, less<int>, FKB<int>>(speed_data);
@@ -142,6 +153,19 @@ namespace {
         for (int i=0; i<20; i++)
             for (int j=i; j<20; j++)
                EXPECT_EQ(rmqs.find(i,j), rmq.find(i,j))<<i<<" "<<j;
+        rmq.print_preprocess();
+    }
+    TEST_F(RMQTest, SpeedTestFKB){
+        for (int k=0; k<cases_n; k++)
+            speed_FKB.find(cases1[k], cases2[k]);
+    }
+    TEST_F(RMQTest, SpeedTestSQR){
+        //for (int k=0; k<cases_n; k++)
+        //    speed_SQR.find(cases1[k], cases2[k]);
+    }
+    TEST_F(RMQTest, SpeedTestSTR){
+        for (int k=0; k<cases_n; k++)
+            speed_STR.find(cases1[k], cases2[k]);
     }
     TEST_F(RMQTest, EqualTest){
         for (int l = 0; l<100; l++){
@@ -180,7 +204,7 @@ namespace {
         data[9] = string("qqqqq");
         RMQ<string, less<string>, SqrtDecomposition<string> > rmqs(data);
         RMQ<string, less<string>, FKB<string> > rmq(data);
-        //rmq.print_preprocess();
+        rmq.print_preprocess();
         for (int i=0; i<10; i++)
             for (int j=i; j<10; j++)
                EXPECT_EQ(rmqs.find(i,j), rmq.find(i,j))<<i<<" "<<j;

@@ -142,29 +142,28 @@ template <class T, class Compare>
 
             int b = block_size;
             int r = j/b;
-            int l = (int)ceil(((double)i+1)/((double)b));
+            int l = (int)ceil(((double)i+1)/((double)b))-1;
             int minimum = i;
-            int ll = l-1;
-            if (r>l) {
-                int sz = pows[r-l];
-                if (H(table[l][sz])<H(table[r-1-pow(2, sz)+1][sz]))
-                    minimum = table[l][sz];
+            if (r > l+1) {
+                int sz = pows[r-l-1];
+                if (H(table[l+1][sz])<H(table[r-1-pow(2, sz)+1][sz]))
+                    minimum = table[l+1][sz];
                 else
                     minimum = table[r-1-pow(2, sz)+1][sz];
-                if (H(PRECALC(ll, i-ll*b, b-1) + ll*b) < H(minimum))
-                    minimum = PRECALC(ll, i-ll*b, b-1)+ll*b;
+                if (H(PRECALC(l, i-l*b, b-1) + l*b) < H(minimum))
+                    minimum = PRECALC(l, i-l*b, b-1)+l*b;
                 if (H(PRECALC(r, 0, j-r*b)+r*b) < H(minimum))
                     minimum = PRECALC(r, 0, j-r*b)+r*b;
             }
-            if (r==l){
-                if (H(PRECALC(ll, i-ll*b, b-1)+ll*b) < H(minimum))
-                    minimum = PRECALC(ll, i-ll*b, b-1)+ll*b;
+            if (r == l+1){
+                if (H(PRECALC(l, i-l*b, b-1)+l*b) < H(minimum))
+                    minimum = PRECALC(l, i-l*b, b-1)+l*b;
                 if (H(PRECALC(r, 0, j-r*b)+r*b) < H(minimum))
                     minimum = PRECALC(r, 0, j-r*b)+r*b;
             }
-            if (r==ll){
-                if (H(PRECALC(ll, i-ll*b, j-ll*b)+ll*b) < H(minimum))
-                    minimum = PRECALC(ll, i-ll*b, j-ll*b)+ll*b;
+            if (r == l){
+                if (H(PRECALC(l, i-l*b, j-l*b)+l*b) < H(minimum))
+                    minimum = PRECALC(l, i-l*b, j-l*b)+l*b;
             }
 
             return (*data)[order[minimum]];
